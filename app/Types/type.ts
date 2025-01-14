@@ -3,4 +3,12 @@ export type TASK_TYPE = {
     title: string;
     description: string;
   };
+
+
+export interface ErrorResponse {
+  data: {
+    message: string;
+  };
+}
+
   

@@ -4,8 +4,7 @@ import InputField from "../components/InputField";
 import Link from "next/link";
 import useLoginForm from "../hooks/useLoginForm";
 const Login: React.FC = () => {
-  const { formData, handleChange, handleSubmit } = useLoginForm(); 
-
+  const { formData, handleChange, handleSubmit ,Error } = useLoginForm(); 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
       <div className="bg-white p-10 rounded-xl shadow-2xl border border-gray-200 w-11/12 max-w-lg">
@@ -30,6 +29,12 @@ const Login: React.FC = () => {
             onChange={handleChange}
             placeholder="Enter your password"
           />
+        {Error &&
+             <p className="text-center text-red-500 mb-8">
+             {Error?.data?.message}
+           </p>
+        } 
+
           <div className="flex justify-center">
             <button
               type="submit"

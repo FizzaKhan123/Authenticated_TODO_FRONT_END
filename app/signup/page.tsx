@@ -5,7 +5,7 @@ import Link from "next/link";
 import useSignupForm from "../hooks/useSignupForm"; 
 
 const Signup: React.FC = () => {
-  const { formData, handleChange, handleSubmit } = useSignupForm();
+  const { formData, handleChange, handleSubmit ,Error } = useSignupForm();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
@@ -14,8 +14,6 @@ const Signup: React.FC = () => {
         <p className="text-center text-gray-600 mb-8">
           Start your journey with us by creating an account.
         </p>
-
-        {/* Form Section */}
         <form onSubmit={handleSubmit} className="space-y-6">
           <InputField
             label="Username"
@@ -41,8 +39,11 @@ const Signup: React.FC = () => {
             onChange={handleChange}
             placeholder="Enter your password"
           />
-
-          {/* Submit Button */}
+           { Error &&
+             <p className="text-center text-red-500 mb-8">
+             {Error?.data?.message}
+           </p>
+        } 
           <div className="flex justify-center">
             <button
               type="submit"

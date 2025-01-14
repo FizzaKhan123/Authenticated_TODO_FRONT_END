@@ -1,7 +1,11 @@
 import { useState } from "react";
 import Cookies from 'js-cookie';
-import { useSignUpMutation } from '../redux/features/apiSlice';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation'; 
+import { useSignUpMutation } from '../redux/features/apiSlice';
+import { setAuthenticated } from '../redux/features/authSlice';
+import { ErrorResponse } from "../Types/type";
 
 interface FormData {
   username: string;
@@ -11,7 +15,9 @@ interface FormData {
 
 const useSignupForm = () => {
  const router = useRouter();
+ const dispatch=useDispatch();
  const [signUp, { isLoading, isError, isSuccess, error }] = useSignUpMutation();  
+ const Error = error as ErrorResponse | undefined;
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
@@ -26,18 +32,15 @@ const useSignupForm = () => {
     e.preventDefault();
     try {
       const response = await signUp(formData).unwrap();
-      alert('User signed up successfully');
+      toast.success("User Sign Up Successfully");
         const token = response?.token; 
               if (token) {
                   Cookies.set('authToken', token, { expires: 7 });
-              }
-              router.push('/');
-              console.log('response',response);
-      router.push('/');
-   
-
+                  dispatch(setAuthenticated(true));
+                  router.push('/');   
+     }
     } catch (err) {
-      console.error('Error during sign-up:', err);
+      toast.error(Error?.data?.message);
     }
   };
 
@@ -45,6 +48,7 @@ const useSignupForm = () => {
     formData,
     handleChange,
     handleSubmit,
+    Error
   };
 };
 

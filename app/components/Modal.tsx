@@ -7,12 +7,12 @@ interface ModalProps {
     onSubmit: () => void;
     newTask: { title: string; description: string };
     setNewTask: React.Dispatch<React.SetStateAction<{ title: string; description: string }>>;
+    error:string | undefined;
 }
 
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, newTask, setNewTask }) => {
-    if (!isOpen) return null; 
-    console.log("onSubmit",onSubmit);
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, newTask, setNewTask ,error }) => {
+    if (!isOpen) return null;
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
@@ -20,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, newTask, setNe
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                        console.log("submitting tsk not working");
                         onSubmit();
                     }}
                 >
@@ -53,6 +52,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit, newTask, setNe
                             required
                         ></textarea>
                     </div>
+                    {error && 
+                      <p className="text-center text-red-500 mb-8">
+                        {error}
+                     </p>
+                    }
                     <div className="flex justify-end">
                         <button
                             type="button"
